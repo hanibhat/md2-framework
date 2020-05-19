@@ -12,8 +12,7 @@ class GetFiredEventsHelper {
 	def getFiredEvents(WorkflowElement wfe) {
 		
 		// get all code fragments of actions
-		val actions = wfe.actions.
-			filter(CustomAction)
+		val actions = wfe.actions.filter(CustomAction)
 		
 		// filter eAllContents for fireEventActions
 		val fireEventActions = actions.map[a|a.eAllContents.toIterable].flatten.filter(typeof(FireEventAction))

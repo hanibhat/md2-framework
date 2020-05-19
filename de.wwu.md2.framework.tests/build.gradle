@@ -1,8 +1,8 @@
 dependencies {
-	compile project(':de.wwu.md2.framework')
-	testCompile "junit:junit:4.12"
-	testCompile "org.eclipse.xtext:org.eclipse.xtext.testing:${xtextVersion}"
-	testCompile "org.eclipse.xtext:org.eclipse.xtext.xbase.testing:${xtextVersion}"
+	implementation project(':de.wwu.md2.framework')
+	testImplementation "junit:junit:4.12"
+	testImplementation "org.eclipse.xtext:org.eclipse.xtext.testing:${xtextVersion}"
+	testImplementation "org.eclipse.xtext:org.eclipse.xtext.xbase.testing:${xtextVersion}"
 }
 //this is an eclipse plugin project
 eclipseClasspath.enabled=false

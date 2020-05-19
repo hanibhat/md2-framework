@@ -1,7 +1,7 @@
 dependencies {
-	compile project(':de.wwu.md2.framework')
-	compile "org.eclipse.xtext:org.eclipse.xtext.ide:${xtextVersion}"
-	compile "org.eclipse.xtext:org.eclipse.xtext.xbase.ide:${xtextVersion}"
+	implementation project(':de.wwu.md2.framework')
+	implementation "org.eclipse.xtext:org.eclipse.xtext.ide:${xtextVersion}"
+	implementation "org.eclipse.xtext:org.eclipse.xtext.xbase.ide:${xtextVersion}"
 }
 //this is an eclipse plugin project
 eclipseClasspath.enabled=false

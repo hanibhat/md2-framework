@@ -41,6 +41,9 @@ import de.wwu.md2.framework.mD2.Image
 class LayoutGen {
 	
 	final static String elementMarginBottom = "20dp"
+	
+	// Accessibility constraints
+	final static String touchTargetMinLengthDP = "48dp"
 
 	def static generateLayouts(IExtendedFileSystemAccess fsa, String rootFolder, String mainPath, String mainPackage,
 		Iterable<ViewFrame> rootViews, Iterable<WorkflowElementReference> startableWorkflowElements) {
@@ -117,6 +120,9 @@ class LayoutGen {
 		val doc = docBuilder.newDocument
 		val generationComment = doc.createComment("generated in de.wwu.md2.framework.generator.android.lollipop.view.Layout.generateLayout()")
 		doc.appendChild(generationComment)
+		
+		// TODO maybe add here a home button to return the main activity	
+		// R16	
 
 		var rootElement = doc.createElement("ScrollView")
 		
@@ -332,11 +338,15 @@ class LayoutGen {
 		// id
 		buttonElement.setAttribute("android:id", "@id/" + qualifiedName)
 
-		// height and width
-		if(button.width <= 0){
+		// height and width - height is set in the accessibility segment
+		if (button.width <= 0) {
 			buttonElement.setAttribute("android:layout_width", "match_parent")
-		}else{
+		} else {
 			buttonElement.setAttribute("android:layout_width", "0dp")
+			// TODO setting button width
+			// wrap a container (layout_height 48dp, margin_bottom 20dp) around the button and add a space (width 100-button.width) element 
+			// to compensate for the remaining percentage of the width
+			
 			buttonElement.setAttribute("android:layout_columnWeight", String.valueOf(button.width))
 		}
 		
@@ -344,7 +354,7 @@ class LayoutGen {
 			buttonElement.setAttribute("android:nextFocusForward", "@id/" + qnp.getFullyQualifiedName(button.focusNext).toString("_"))
 		} // TODO fallback solution when nextFocusForward is not specified -> use next ContentElement (potentially in following containers) 
 		
-		buttonElement.setAttribute("android:layout_height", "wrap_content")
+//		buttonElement.setAttribute("android:layout_height", "wrap_content")
 		buttonElement.setAttribute("android:layout_gravity", "fill_horizontal")
 		buttonElement.setAttribute("android:layout_marginBottom", elementMarginBottom)
 
@@ -360,10 +370,44 @@ class LayoutGen {
 		if(!button?.style?.body?.icon.nullOrEmpty){
 			buttonElement.setAttribute("android:drawableLeft", "@md2library:drawable/" + button.style.body.icon + "_black")
 		}
-
+		
 		buttonElement.setAttribute("android:enabled", String.valueOf(isEnabled))
 
+		includeButtonElementAccessibility(button, buttonElement, qnp)
+
 		return buttonElement
+	}
+	
+	private static def includeButtonElementAccessibility(
+		Button button,
+		Element buttonElement,
+		DefaultDeclarativeQualifiedNameProvider qnp
+	) {
+		// R17
+		buttonElement.setAttribute("android:layout_height", touchTargetMinLengthDP)
+		
+		// R13
+		// initial focus
+//		if (button?.keyboardNav.hasFocus === true) {
+			// TODO: request focus
+//			var requestFocus = doc.createElement()
+//			buttonElement.appendChild(requestFocus)
+//		}
+		
+		// focus order
+//		if (button?.keyboardNav.focusNext !== null) {
+//			buttonElement.setAttribute("android:nextFocusForward","@id/" + 
+//				qnp.getFullyQualifiedName(button.keyboardNav.focusNext).toString("_"))
+//		}
+		
+		// R15
+//		// focusable
+//		if (button?.focusable.focusable === true) {
+//			buttonElement.setAttribute("android:focusable","true")
+//		}
+//		if (button?.focusable.touchFocusable === true) {
+//			buttonElement.setAttribute("android:focusableInTouchMode","true")
+//		}
 	}
 
 	protected static def createTextInputElement(Document doc, TextInput textInput) {
@@ -380,7 +424,7 @@ class LayoutGen {
 			textInputElement.setAttribute("android:layout_width", "0dp")
 			textInputElement.setAttribute("android:layout_columnWeight", String.valueOf(textInput.width))
 		}
-		textInputElement.setAttribute("android:layout_height", "wrap_content")
+//		textInputElement.setAttribute("android:layout_height", "wrap_content")
 		textInputElement.setAttribute("android:layout_gravity", "fill_horizontal")
 		textInputElement.setAttribute("android:layout_marginBottom", elementMarginBottom)
 
@@ -407,8 +451,15 @@ class LayoutGen {
 		}
 		
 		textInputElement.setAttribute("android:imeOptions","actionDone")
+		
+		includeTextInputElementAccessibility(textInputElement)
 
 		return textInputElement
+	}
+	
+	protected static def includeTextInputElementAccessibility(Element textInputElement) {
+		// R17
+		textInputElement.setAttribute("android:layout_height", touchTargetMinLengthDP)
 	}
 	
 	protected static def createLabelElement(Document doc, Label label) {
@@ -448,7 +499,7 @@ class LayoutGen {
 			optionInputElement.setAttribute("android:layout_width", "0dp")
 			optionInputElement.setAttribute("android:layout_columnWeight", String.valueOf(optionInput.width))
 		}
-		optionInputElement.setAttribute("android:layout_height", "wrap_content")
+//		optionInputElement.setAttribute("android:layout_height", "wrap_content")
 		optionInputElement.setAttribute("android:layout_marginBottom", elementMarginBottom)
 		
 		optionInputElement.setAttribute("android:entries", "@array/" + qualifiedName + "_entries")
@@ -461,7 +512,14 @@ class LayoutGen {
 
 		optionInputElement.setAttribute("android:enabled", String.valueOf(isEnabled))
 
+		includeTextInputElementAccessibility(optionInputElement)
+
 		return optionInputElement
+	}
+	
+	protected static def includeOptionInputElementAccessibility(Element optionInputElement) {
+		// R17
+		optionInputElement.setAttribute("android:layout_height", touchTargetMinLengthDP)
 	}
 	
 	protected static def createIntegerInputElement(Document doc, IntegerInput integerInput) {
@@ -471,7 +529,6 @@ class LayoutGen {
 
 		// id
 		integerInputElement.setAttribute("android:id", "@id/" + qualifiedName)
-
 		
 		if(integerInput.width <= 0){
 			integerInputElement.setAttribute("android:layout_width", "match_parent")
@@ -498,8 +555,15 @@ class LayoutGen {
 		integerInputElement.setAttribute("android:inputType", "number");
 		
 		integerInputElement.setAttribute("android:imeOptions","actionDone")
+		
+		includeIntegerInputElementAccessibility(integerInputElement)
 
 		return integerInputElement
+	}
+	
+	protected static def includeIntegerInputElementAccessibility(Element integerInputElement) {
+		// R17
+		integerInputElement.setAttribute("android:layout_height", touchTargetMinLengthDP)
 	}
 	
 	protected static def createBooleanInputElement(Document doc, BooleanInput booleanInput) {
@@ -530,8 +594,15 @@ class LayoutGen {
 		booleanInputElement.setAttribute("android:enabled", String.valueOf(isEnabled))
 		
 		booleanInputElement.setAttribute("android:imeOptions","actionDone")
+		
+		includeBooleanInputElementAccessibility(booleanInputElement)
 
 		return booleanInputElement
+	}
+	
+	protected static def includeBooleanInputElementAccessibility(Element booleanInputElement) {
+		// R17
+		booleanInputElement.setAttribute("android:layout_height", touchTargetMinLengthDP)
 	}
 	
 	protected static def createListViewElement(Document doc, ListView listView) {
@@ -583,7 +654,16 @@ class LayoutGen {
 //			imageElement.setAttribute("android:drawableLeft", "@md2library:drawable/" + image.style.body.icon + "_black")
 //		}
 
+		includeImageElementAccessibility(image, imageElement)
+
 		return imageElement
+	}
+	
+	private static def includeImageElementAccessibility(Image image, Element imageElement) {
+		//	R01
+		if (image.description !== '') {
+			imageElement.setAttribute("android:contentDescription", "@string/"+image.description)
+		}
 	}
 	
 	protected static def createSpacerElement(Document doc, Spacer spacer) {

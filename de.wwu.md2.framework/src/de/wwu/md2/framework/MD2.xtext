@@ -318,7 +318,10 @@ Image:
 		'src' src = STRING &
 		('height' height = INT)? &
 		('width' width = INT)? &
-		('style' style = StyleAssignment)?
+		('style' style = StyleAssignment)? &
+		// Accessibility 
+		// R01		
+		('description' description = STRING)?
 	) '}'
 ;
 
