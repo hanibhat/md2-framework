@@ -120,9 +120,6 @@ class LayoutGen {
 		val doc = docBuilder.newDocument
 		val generationComment = doc.createComment("generated in de.wwu.md2.framework.generator.android.lollipop.view.Layout.generateLayout()")
 		doc.appendChild(generationComment)
-		
-		// TODO maybe add here a home button to return the main activity	
-		// R16	
 
 		var rootElement = doc.createElement("ScrollView")
 		

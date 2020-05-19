@@ -36,6 +36,9 @@ class ValueGen {
 					<item name="spacer«MD2GeneratorUtil.getName(ve)»" type="id"/>
 				«ENDIF»
 			«ENDFOR»
+			««« Accessibility R16
+			««« TODO move this into a function and pass a button (ViewGUIElement) to it
+<item name="mainMenu_HomeBtn" type="id"/>
 		</resources>
 	'''
 
@@ -56,6 +59,9 @@ class ValueGen {
 			«FOR ve : viewGUIElements»
 				«generateStringEntry(ve)»
 			«ENDFOR»
+			««« Accessibility R16
+			««« TODO move this into a function and pass a button (ViewGUIElement) to it
+<string name="mainMenu_HomeBtn_Label">Home</string>
 		</resources>
 	'''
 

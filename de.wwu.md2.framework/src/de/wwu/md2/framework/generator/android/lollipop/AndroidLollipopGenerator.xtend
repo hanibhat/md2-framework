@@ -14,6 +14,7 @@ import de.wwu.md2.framework.generator.android.lollipop.model.EntityGen
 import de.wwu.md2.framework.generator.android.lollipop.model.SQLiteGen
 import de.wwu.md2.framework.generator.android.lollipop.view.LayoutGen
 import de.wwu.md2.framework.generator.android.lollipop.view.ValueGen
+import de.wwu.md2.framework.generator.android.lollipop.view.MenuGen
 import de.wwu.md2.framework.generator.util.MD2GeneratorUtil
 import de.wwu.md2.framework.mD2.ViewGUIElement
 import org.apache.log4j.Logger
@@ -164,6 +165,11 @@ class AndroidLollipopGenerator extends AbstractPlatformGenerator {
 			// Views String Values
 			fsa.generateFile(rootFolder + Settings.VALUES_PATH + Settings.VIEWS_XML_NAME,
 				ValueGen.generateViewsXml(rootViews, mainPackage))
+				
+			// Menus
+			// Accessibility R16
+			fsa.generateFile(rootFolder + Settings.MENU_PATH + Settings.MAIN_MENU_XML_NAME,
+				MenuGen.generateMainMenuXml())
 
 			// Styles
 			fsa.generateFile(rootFolder + Settings.VALUES_PATH + Settings.STYLES_XML_NAME, ValueGen.generateStylesXml)

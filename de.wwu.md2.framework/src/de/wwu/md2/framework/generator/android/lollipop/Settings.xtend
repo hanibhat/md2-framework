@@ -67,6 +67,7 @@ class Settings {
 
 	public static String IDS_XML_NAME = "ids.xml"
 	public static String VIEWS_XML_NAME = "views.xml"
+	public static String MAIN_MENU_XML_NAME = "main_menu.xml"
 	public static String STRINGS_XML_NAME = "strings.xml"
 	public static String STYLES_XML_NAME = "styles.xml"
 	public static String DIMENS_XML_NAME = "dimens.xml"
