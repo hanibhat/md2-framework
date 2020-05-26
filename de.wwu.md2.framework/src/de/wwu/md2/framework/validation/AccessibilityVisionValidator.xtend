@@ -2,16 +2,18 @@ package de.wwu.md2.framework.validation
 
 import org.eclipse.xtext.validation.Check
 import de.wwu.md2.framework.mD2.Button
+import de.wwu.md2.framework.mD2.InputElement
 import de.wwu.md2.framework.mD2.MD2Package
 
 class AccessibilityVisionValidator extends AbstractMD2Validator {
 	
 	public static final String ACCESSIBILITY_SIZE = "AccessibilitySizeWarning"
+    public static final String ACCESSIBILITY_FOCUS_NEXT = "AccessibilityFocusWarning"
     
     // Check sizes
 	@Check
     def checkButtonSize(Button button) {
-    	// Requirement R08
+    	// Requirement R17
     	// Touch area of the elements must have at least 48x48dp, with spacing of at least 9dp between them.
     	// In MD2, widths are specified in %. For small smartphones with 540px size this equates to a minimum of ~9.
     	
@@ -23,4 +25,14 @@ class AccessibilityVisionValidator extends AbstractMD2Validator {
     }
     
     // check colours, ...
+    
+	// Accessibility R13 and R15
+	@Check
+	def checkInputElementFocusNext(InputElement inputElement) {
+		if (inputElement.focusNext === null){
+			warning("Accessibility: Input elements must specify the next element in focus order, unless this element is the last!",
+				MD2Package.eINSTANCE.inputElement_FocusNext, 
+				ACCESSIBILITY_FOCUS_NEXT);
+		}
+	}
 }

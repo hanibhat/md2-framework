@@ -14,6 +14,7 @@ import org.eclipse.xtext.ui.editor.model.edit.IModificationContext
 import de.wwu.md2.framework.mD2.Entity
 import org.eclipse.xtext.ui.editor.model.edit.ISemanticModification
 import de.wwu.md2.framework.mD2.Button
+import de.wwu.md2.framework.mD2.InputElement
 
 /**
  * Custom quickfixes.
@@ -51,6 +52,20 @@ class MD2QuickfixProvider extends DefaultQuickfixProvider {
 			new ISemanticModification() {
 				override apply(EObject element, IModificationContext context) {
 					(element as Button).width = 9;
+				}
+			});
+	}
+	
+	// Provides a quick fix for the accessibility issue of small button widths 
+	@Fix(AccessibilityVisionValidator.ACCESSIBILITY_FOCUS_NEXT)
+	def fixInputElementFocusNext(Issue issue, IssueResolutionAcceptor acceptor){
+		acceptor.accept(issue, 
+			"Specify element", 
+			"Specify next element in focus order", 
+			"upcase.png",
+			new ISemanticModification() {
+				override apply(EObject element, IModificationContext context) {
+					(element as InputElement).focusNext = null;
 				}
 			});
 	}

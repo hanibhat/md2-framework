@@ -39,6 +39,21 @@ PackageDefinition:
 ;
 
 
+
+// TODO find a more suitable segment in this file in which to place these rules
+//KeyboardNav: 
+//	('hasFocus' ((hasFocus ?= 'true') | 'false'))? &
+//	('focusNext' focusNext = [ContentElement])?
+//;
+//Focusable:
+//	('focusable' ((focusable ?= 'true') | 'false'))? &
+//	('touchFocusable' ((touchFocusable ?= 'true') | 'false'))?
+//;
+//FocusNextElement:
+//	ContentElement?
+//;
+
+
 /////////////////////////////////////
 /////////////////////////////////////
 // View layer
@@ -249,7 +264,9 @@ fragment InputParams*:
 	('type' type = InputType)? &
 	('disabled' ((isDisabled ?= 'true') | 'false'))? &
 	('width' width = PERCENT)? &
-	('style' style = StyleAssignment)?
+	('style' style = StyleAssignment)? &
+	// Accessibility R13 and R15	
+	('focusNext' focusNext = [ContentElement])?
 ;
 
 /*

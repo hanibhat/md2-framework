@@ -347,9 +347,9 @@ class LayoutGen {
 			buttonElement.setAttribute("android:layout_columnWeight", String.valueOf(button.width))
 		}
 		
-		if(button.focusNext !== null){
-			buttonElement.setAttribute("android:nextFocusForward", "@id/" + qnp.getFullyQualifiedName(button.focusNext).toString("_"))
-		} // TODO fallback solution when nextFocusForward is not specified -> use next ContentElement (potentially in following containers) 
+//		if(button.focusNext !== null){
+//			buttonElement.setAttribute("android:nextFocusForward", "@id/" + qnp.getFullyQualifiedName(button.focusNext).toString("_"))
+//		} // TODO fallback solution when nextFocusForward is not specified -> use next ContentElement (potentially in following containers) 
 		
 //		buttonElement.setAttribute("android:layout_height", "wrap_content")
 		buttonElement.setAttribute("android:layout_gravity", "fill_horizontal")
@@ -383,28 +383,16 @@ class LayoutGen {
 		// R17
 		buttonElement.setAttribute("android:layout_height", touchTargetMinLengthDP)
 		
-		// R13
-		// initial focus
-//		if (button?.keyboardNav.hasFocus === true) {
-			// TODO: request focus
-//			var requestFocus = doc.createElement()
-//			buttonElement.appendChild(requestFocus)
-//		}
-		
-		// focus order
-//		if (button?.keyboardNav.focusNext !== null) {
-//			buttonElement.setAttribute("android:nextFocusForward","@id/" + 
-//				qnp.getFullyQualifiedName(button.keyboardNav.focusNext).toString("_"))
-//		}
-		
-		// R15
-//		// focusable
-//		if (button?.focusable.focusable === true) {
-//			buttonElement.setAttribute("android:focusable","true")
-//		}
-//		if (button?.focusable.touchFocusable === true) {
-//			buttonElement.setAttribute("android:focusableInTouchMode","true")
-//		}
+		// R13 and R15
+		// TODO rethink this for buttons
+		if (button.focusNext !== null){
+			buttonElement.setAttribute("android:nextFocusForward", "@id/" + qnp.getFullyQualifiedName(button.focusNext).toString("_"))
+			buttonElement.setAttribute("android:imeOptions","actionNext")
+		} else {
+			buttonElement.setAttribute("android:imeOptions","actionDone")
+		}
+		buttonElement.setAttribute("android:focusable", "true")
+		buttonElement.setAttribute("android:focusableInTouchMode", "true")
 	}
 
 	protected static def createTextInputElement(Document doc, TextInput textInput) {
@@ -447,16 +435,30 @@ class LayoutGen {
 				textInputElement.setAttribute("android:inputType", "text")
 		}
 		
-		textInputElement.setAttribute("android:imeOptions","actionDone")
+//		textInputElement.setAttribute("android:imeOptions","actionDone")
 		
-		includeTextInputElementAccessibility(textInputElement)
+		includeTextInputElementAccessibility(textInput, textInputElement, qnp)
 
 		return textInputElement
 	}
 	
-	protected static def includeTextInputElementAccessibility(Element textInputElement) {
+	protected static def includeTextInputElementAccessibility(
+		TextInput textInput, 
+		Element textInputElement,
+		DefaultDeclarativeQualifiedNameProvider qnp
+	) {
 		// R17
 		textInputElement.setAttribute("android:layout_height", touchTargetMinLengthDP)
+		
+		// R13 and R15
+		if (textInput.focusNext !== null){
+			textInputElement.setAttribute("android:nextFocusForward", "@id/" + qnp.getFullyQualifiedName(textInput.focusNext).toString("_"))
+			textInputElement.setAttribute("android:imeOptions","actionNext")
+		} else {
+			textInputElement.setAttribute("android:imeOptions","actionDone")
+		}
+		textInputElement.setAttribute("android:focusable", "true")
+		textInputElement.setAttribute("android:focusableInTouchMode", "true")
 	}
 	
 	protected static def createLabelElement(Document doc, Label label) {
@@ -509,14 +511,28 @@ class LayoutGen {
 
 		optionInputElement.setAttribute("android:enabled", String.valueOf(isEnabled))
 
-		includeTextInputElementAccessibility(optionInputElement)
+		includeOptionInputElementAccessibility(optionInput, optionInputElement, qnp)
 
 		return optionInputElement
 	}
 	
-	protected static def includeOptionInputElementAccessibility(Element optionInputElement) {
+	protected static def includeOptionInputElementAccessibility(
+		OptionInput optionInput, 
+		Element optionInputElement,
+		DefaultDeclarativeQualifiedNameProvider qnp
+	) {
 		// R17
 		optionInputElement.setAttribute("android:layout_height", touchTargetMinLengthDP)
+		
+		// R13 and R15
+		if (optionInput.focusNext !== null){
+			optionInputElement.setAttribute("android:nextFocusForward", "@id/" + qnp.getFullyQualifiedName(optionInput.focusNext).toString("_"))
+			optionInputElement.setAttribute("android:imeOptions","actionNext")
+		} else {
+			optionInputElement.setAttribute("android:imeOptions","actionDone")
+		}
+		optionInputElement.setAttribute("android:focusable", "true")
+		optionInputElement.setAttribute("android:focusableInTouchMode", "true")
 	}
 	
 	protected static def createIntegerInputElement(Document doc, IntegerInput integerInput) {
@@ -551,16 +567,30 @@ class LayoutGen {
 	
 		integerInputElement.setAttribute("android:inputType", "number");
 		
-		integerInputElement.setAttribute("android:imeOptions","actionDone")
+//		integerInputElement.setAttribute("android:imeOptions","actionDone")
 		
-		includeIntegerInputElementAccessibility(integerInputElement)
+		includeIntegerInputElementAccessibility(integerInput, integerInputElement, qnp)
 
 		return integerInputElement
 	}
 	
-	protected static def includeIntegerInputElementAccessibility(Element integerInputElement) {
+	protected static def includeIntegerInputElementAccessibility(
+		IntegerInput integerInput,
+		Element integerInputElement,
+		DefaultDeclarativeQualifiedNameProvider qnp
+	) {
 		// R17
 		integerInputElement.setAttribute("android:layout_height", touchTargetMinLengthDP)
+		
+		// R13 and R15
+		if (integerInput.focusNext !== null){
+			integerInputElement.setAttribute("android:nextFocusForward", "@id/" + qnp.getFullyQualifiedName(integerInput.focusNext).toString("_"))
+			integerInputElement.setAttribute("android:imeOptions","actionNext")
+		} else {
+			integerInputElement.setAttribute("android:imeOptions","actionDone")
+		}
+		integerInputElement.setAttribute("android:focusable", "true")
+		integerInputElement.setAttribute("android:focusableInTouchMode", "true")
 	}
 	
 	protected static def createBooleanInputElement(Document doc, BooleanInput booleanInput) {
@@ -590,16 +620,31 @@ class LayoutGen {
 
 		booleanInputElement.setAttribute("android:enabled", String.valueOf(isEnabled))
 		
-		booleanInputElement.setAttribute("android:imeOptions","actionDone")
+//		booleanInputElement.setAttribute("android:imeOptions","actionDone")
 		
-		includeBooleanInputElementAccessibility(booleanInputElement)
+		includeBooleanInputElementAccessibility(booleanInput, booleanInputElement, qnp)
 
 		return booleanInputElement
 	}
 	
-	protected static def includeBooleanInputElementAccessibility(Element booleanInputElement) {
+	protected static def includeBooleanInputElementAccessibility(
+		BooleanInput booleanInput, 
+		Element booleanInputElement,
+		DefaultDeclarativeQualifiedNameProvider qnp
+		
+	) {
 		// R17
 		booleanInputElement.setAttribute("android:layout_height", touchTargetMinLengthDP)
+		
+		// R13 and R15
+		if (booleanInput.focusNext !== null){
+			booleanInputElement.setAttribute("android:nextFocusForward", "@id/" + qnp.getFullyQualifiedName(booleanInput.focusNext).toString("_"))
+			booleanInputElement.setAttribute("android:imeOptions","actionNext")
+		} else {
+			booleanInputElement.setAttribute("android:imeOptions","actionDone")
+		} 
+		booleanInputElement.setAttribute("android:focusable", "true")
+		booleanInputElement.setAttribute("android:focusableInTouchMode", "true")
 	}
 	
 	protected static def createListViewElement(Document doc, ListView listView) {
