@@ -1,3 +1,4 @@
 /.antlr-generator-*.jar
 /model
 /.launch
+/.idea
