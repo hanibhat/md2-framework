@@ -138,8 +138,8 @@ class MD2Util {
 	 * @return Input stream for the given file.
 	 */
 	static def getSystemResource(String file) {
-		System.out.println("/resources/" + file.replaceFirst("^(\\.)?/(resources/)?", new String()));
-		return MD2Util.getResourceAsStream("/resources/" + file.replaceFirst("^(\\.)?/(resources/)?", new String()));
+		val relativePath = "/res/resources/" + file.replaceFirst("^(\\.)?/(resources/)?", new String())
+		return MD2Util.getResourceAsStream(relativePath);
 	}
 	
 	/**
